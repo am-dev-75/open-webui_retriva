@@ -1,0 +1,17 @@
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:v0.8.12
+    container_name: open-webui_retriva
+    ports:
+      - "3001:8080"
+    environment:
+      OPENAI_API_BASE_URL: http://192.168.1.63:8001/v1
+      OPENAI_API_KEY: dummy-key
+      ENABLE_RAG: "true"
+      DEFAULT_MODEL: dummy-model
+      ENABLE_OLLAMA_PULL: "false"
+      HF_HUB_OFFLINE: "1"
+      RAG_EMBEDDING_MODEL: ""
+      WEBUI_NAME: "Retriva UI"
+#    depends_on:
+#      - retriva
