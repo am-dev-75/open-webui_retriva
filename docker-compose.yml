@@ -7,11 +7,14 @@ services:
     environment:
       OPENAI_API_BASE_URL: http://192.168.1.63:8001/v1
       OPENAI_API_KEY: dummy-key
-      ENABLE_RAG: "true"
+      # Use Retriva's RAG for actual retrieval-augmented generation
+      ENABLE_RAG: "false"
+      BYPASS_EMBEDDING_AND_RETRIEVAL: "true"
+      RAG_EMBEDDING_MODEL: ""
       DEFAULT_MODEL: dummy-model
       ENABLE_OLLAMA_PULL: "false"
       HF_HUB_OFFLINE: "1"
-      RAG_EMBEDDING_MODEL: ""
       WEBUI_NAME: "Retriva UI"
+      DISABLE_DOCUMENT_PROCESSING: "true"
 #    depends_on:
 #      - retriva
