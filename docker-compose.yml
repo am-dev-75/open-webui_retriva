@@ -1,12 +1,18 @@
 services:
   open-webui:
-    image: ghcr.io/open-webui/open-webui:v0.8.12
-    container_name: open-webui_retriva
+    image: ghcr.io/open-webui/open-webui:v0.9.2
+    container_name: open-webui-0.9.2_retriva
     ports:
       - "3000:8080"
+    volumes:
+      - data:/app/backend/data
     environment:
-      OPENAI_API_BASE_URL: http://192.168.1.63:8001/v1
+      # Point OWUI to Retriva's OpenAI-compatible API endpoint
+      #OPENAI_API_BASE_URL: http://localhost:8001/v1
+      # Point OWUI to the Thin Adapter that routes to Retriva's API and handles RAG orchestration
+      OPENAI_API_BASE_URL: http://192.168.1.63:8002/v1
       OPENAI_API_KEY: dummy-key
+      # OWUI must remain dumb; adapter handles UX routing and RAG orchestration
       # Use Retriva's RAG for actual retrieval-augmented generation
       ENABLE_RAG: "false"
       BYPASS_EMBEDDING_AND_RETRIEVAL: "true"
@@ -16,5 +22,16 @@ services:
       HF_HUB_OFFLINE: "1"
       WEBUI_NAME: "Retriva UI"
       DISABLE_DOCUMENT_PROCESSING: "true"
-#    depends_on:
-#      - retriva
+      WEBHOOK_URL: http://192.168.1.63:8002/api/v1/events
+      ENABLE_USER_WEBHOOKS: "true"
+      ENABLE_API_KEYS: "true"
+      # Using thumb up/down to rate responses is not useful for Retriva
+      ENABLE_EVALUATION: "false"
+      # Enable passing extra parameters to the model,
+      # which Retriva can use for advanced features
+      #ENABLE_MODEL_EXTRA_PARAMS: "true"
+      #    depends_on:
+      #      - retriva
+
+volumes:
+  data:
